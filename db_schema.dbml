@@ -1,0 +1,74 @@
+Table orders {
+  id integer [primary key]
+  client_id integer
+  delivery_type enum
+  is_paid bool
+  total_price float
+  discount float
+  scheduled_to timestamp
+  created_at timestamp 
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table order_details {
+  id integer [primary key]
+  order_id integer
+  product_id integer
+  product_quantity integer
+  note text [null]
+  unit_price float
+  created_at timestamp 
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table products {
+  id integer [primary key]
+  name varchar
+  description text
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table product_details {
+  id integer [primary key]
+  product_id integer
+  quantity float
+  measurement_unit enum
+  note text [null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table clients {
+  id integer [primary key]
+  name varchar [not null]
+  address varchar [null]
+  phone_number varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Table resources {
+  id integer [primary key]
+  name varchar [not null]
+  description text [null]
+  type enum
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [null]
+}
+
+Ref: resources.id <> product_details.id
+
+Ref: products.id < product_details.product_id 
+
+Ref: orders.id < order_details.order_id 
+
+Ref: products.id < order_details.product_id 
+
+Ref: clients.id < orders.client_id
